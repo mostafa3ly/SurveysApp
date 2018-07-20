@@ -27,33 +27,40 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SurveysListActivity extends AppCompatActivity {
+public class SurveysListActivity extends AppCompatActivity implements SurveysAdapter.OnClickListener{
 
 
     @BindView(R.id.surveys_list)RecyclerView surveysRecyclerView;
     private SurveysAdapter mSurveysAdapter;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private DatabaseReference mUsersReference;
+    private DatabaseReference mSurveysReference;
     private ValueEventListener mValueEventListener ;
+    private List<Survey> mSurveys;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_surveys_list);
         ButterKnife.bind(this);
         mAuth = FirebaseAuth.getInstance();
-        mUsersReference = FirebaseDatabase.getInstance().getReference().child("surveys");
+        mSurveysReference = FirebaseDatabase.getInstance().getReference().child(getString(R.string.surveys));
         surveysRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mSurveysAdapter = new SurveysAdapter(new ArrayList<Survey>());
+        mSurveysAdapter = new SurveysAdapter(new ArrayList<Survey>(),this);
         surveysRecyclerView.setAdapter(mSurveysAdapter);
         mValueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mSurveys = new ArrayList<>();
                 List<Survey> surveys = new ArrayList<>();
                 for (DataSnapshot snapshot :dataSnapshot.getChildren()) {
-                    surveys.add(snapshot.getValue(Survey.class));
+                    String uId  = mAuth.getCurrentUser().getUid();
+                    Survey survey = snapshot.getValue(Survey.class);
+                    mSurveys.add(survey);
+                    if(!snapshot.child(getString(R.string.results)).hasChild(uId) && !survey.getOwnerId().equals(uId))
+                        surveys.add(survey);
                 }
                 mSurveysAdapter.addAll(surveys);
+
             }
 
             @Override
@@ -66,13 +73,13 @@ public class SurveysListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mUsersReference.addValueEventListener(mValueEventListener);
+        mSurveysReference.addValueEventListener(mValueEventListener);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mUsersReference.removeEventListener(mValueEventListener);
+        mSurveysReference.removeEventListener(mValueEventListener);
     }
 
     @Override
@@ -101,7 +108,7 @@ public class SurveysListActivity extends AppCompatActivity {
                 return true;
             case R.id.my_surveys: {
                 Intent intent = new Intent(this, MySurveysActivity.class);
-                ArrayList<Survey> mySurveys = mSurveysAdapter.getMySurveys(FirebaseAuth.getInstance().getUid());
+                ArrayList<Survey> mySurveys = getMySurveys();
                 intent.putParcelableArrayListExtra(getString(R.string.my_surveys),mySurveys);
                 startActivity(intent);
 
@@ -110,5 +117,24 @@ public class SurveysListActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private ArrayList<Survey> getMySurveys ()
+    {
+        ArrayList<Survey> mySurveys = new ArrayList<>();
+        for (Survey survey :mySurveys) {
+            if (survey.getOwnerId().equals(mAuth.getCurrentUser().getUid()))
+            {
+                mySurveys.add(survey);
+            }
+        }
+        return mySurveys;
+    }
+
+    @Override
+    public void onClick(Survey survey) {
+        Intent intent = new Intent(this,SurveyActivity.class);
+        intent.putExtra(getString(R.string.survey),survey);
+        startActivity(intent);
     }
 }

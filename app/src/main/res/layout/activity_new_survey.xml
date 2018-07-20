@@ -8,48 +8,50 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     tools:context=".NewSurveyActivity">
-    <LinearLayout
-        android:orientation="vertical"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <EditText
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:padding="16dp"
+                android:id="@+id/survey_title"
+                android:hint="@string/survey_title"/>
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/questions_list"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+        </LinearLayout>
+        <Button
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="text"
-            android:padding="16dp"
-            android:id="@+id/survey_title"
-            android:hint="@string/survey_title"/>
+            android:textColor="#fff"
+            android:layout_gravity="center|bottom"
+            android:background="@drawable/button_background"
+            android:layout_margin="8dp"
+            android:textStyle="bold"
+            android:id="@+id/publish"
+            android:text="@string/publish"/>
 
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/questions_list"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#fff"
-        android:layout_gravity="center"
-        android:background="@drawable/button_background"
-        android:layout_margin="32dp"
-        android:textStyle="bold"
-        android:id="@+id/publish"
-        android:text="@string/publish"/>
-
-    </LinearLayout>
+    </FrameLayout>
 
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/add_question"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="bottom|end"
-        android:paddingBottom="16dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
         app:menu_animationDelayPerItem="50"
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp"
         app:menu_backgroundColor="#5000"
         app:menu_colorNormal="@color/colorAccent"
         app:menu_colorPressed="@color/colorPrimary"

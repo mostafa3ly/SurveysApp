@@ -11,17 +11,17 @@ import android.widget.TextView;
 
 import com.example.mostafa.surveysapp.models.Question;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.ViewHolder>{
 
-    private List<Question> questions;
+    private ArrayList<Question> questions;
     private Context context;
 
-    public QuestionsAdapter(List<Question> questions, Context context) {
+    public QuestionsAdapter(ArrayList<Question> questions, Context context) {
         this.questions = questions;
         this.context = context;
     }
@@ -38,11 +38,9 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
     public void onBindViewHolder(@NonNull QuestionsAdapter.ViewHolder holder, int position) {
         Question question = questions.get(position);
         holder.questionTextView.setText(question.getQuestion());
-        FinalOptionsAdapter finalOptionsAdapter = new FinalOptionsAdapter(question.getOptions());
+        FinalOptionsAdapter finalOptionsAdapter = new FinalOptionsAdapter(question.getAnswers());
         holder.optionsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         holder.optionsRecyclerView.setAdapter(finalOptionsAdapter);
-        if(question.getType()!=1)
-            holder.answerTextView.setVisibility(View.GONE);
     }
 
     @Override
@@ -53,7 +51,6 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.question)TextView questionTextView;
         @BindView(R.id.options_list) RecyclerView optionsRecyclerView;
-        @BindView(R.id.essay_answer_field) TextView answerTextView;
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
@@ -63,6 +60,17 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
     public void add (Question question)
     {
         questions.add(question);
+        notifyDataSetChanged();
+    }
+
+    public ArrayList<Question> getQuestions()
+    {
+        return questions;
+    }
+
+    public void add(ArrayList<Question> questions){
+        this.questions.clear();
+        this.questions.addAll(questions);
         notifyDataSetChanged();
     }
 }

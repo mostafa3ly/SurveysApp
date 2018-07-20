@@ -19,4 +19,15 @@
     <string name="fill_blanks">Please fill blanks</string>
     <string name="search">Search</string>
     <string name="pin">Pin</string>
+    <string name="answers">Answers</string>
+    <string name="position">Position</string>
+    <string name="questions">Questions</string>
+    <string name="add_survey_title">Add survey title</string>
+    <string name="no_questions_added">No question added</string>
+    <string name="survey_published_successfully">Survey published successfully</string>
+    <string name="surveys">surveys</string>
+    <string name="users">users</string>
+    <string name="results">Results</string>
+    <string name="survey">Survey</string>
+    <string name="options">Options</string>
 </resources>

@@ -9,16 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.ViewHolder>{
 
-    private List<String> options;
+    private ArrayList<String> options;
 
-    public OptionsAdapter(List<String> options) {
+    public OptionsAdapter(ArrayList<String> options) {
         this.options = options;
     }
 
@@ -59,13 +59,13 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.option)EditText optionField;
-         public ViewHolder(View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
     }
 
-    public List<String> getOptions ()
+    public ArrayList<String> getOptions ()
     {
         return this.options;
     }
@@ -80,5 +80,12 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.ViewHold
             options.remove(options.size() - 1);
             notifyDataSetChanged();
         }
+    }
+
+    public void add(ArrayList<String> options)
+    {
+        this.options.clear();
+        this.options.addAll(options);
+        notifyDataSetChanged();
     }
 }

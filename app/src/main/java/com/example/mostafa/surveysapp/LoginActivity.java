@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         mAuth = FirebaseAuth.getInstance();
-        mUsersReference = FirebaseDatabase.getInstance().getReference().child("users");
+        mUsersReference = FirebaseDatabase.getInstance().getReference().child(getString(R.string.users));
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
