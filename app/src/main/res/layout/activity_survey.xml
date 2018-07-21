@@ -1,29 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="8dp"
+    android:orientation="vertical"
     tools:context=".SurveyActivity">
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/questions_list"
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:id="@+id/question"
         />
 
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/essay_question_background"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/essay_answer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:gravity="top"
+                android:padding="4dp"
+                android:hint="@string/type_your_answer"
+                android:inputType="textMultiLine"
+                android:minLines="3" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/options_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progress"
+            android:layout_gravity="bottom|start"
+            android:layout_margin="8dp"/>
+        <Button
+            android:id="@+id/submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_background"
+            android:text="@string/submit"
+            android:layout_gravity="center|bottom"
+            android:layout_margin="8dp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            />
     <Button
-        android:id="@+id/submit_result"
+        android:id="@+id/next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/button_background"
-        android:text="@string/submit"
-        android:layout_gravity="center|bottom"
+        android:text="@string/next"
+        android:layout_gravity="bottom|end"
         android:layout_margin="8dp"
         android:textColor="@android:color/white"
         android:textStyle="bold"
         />
 
-</FrameLayout>
+    </FrameLayout>
+
+</LinearLayout>

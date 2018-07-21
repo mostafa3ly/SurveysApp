@@ -64,6 +64,7 @@ public class SurveysAdapter extends RecyclerView.Adapter<SurveysAdapter.ViewHold
     }
 
     public void addAll (List<Survey> surveys){
+        this.surveys.clear();
         this.surveys.addAll(surveys);
         notifyDataSetChanged();
     }
