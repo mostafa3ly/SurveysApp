@@ -9,6 +9,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -19,10 +20,10 @@ public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.ViewHold
 
     private List<String> answers;
     private int type;
-    private List<String> selectedAnswers;
-    private List<Integer> selectedPositions;
+    private ArrayList<String> selectedAnswers;
+    private ArrayList<Integer> selectedPositions;
 
-    public AnswersAdapter(List<String> answers, int type,List<String> selectedAnswers, List<Integer> selectedPositions) {
+    public AnswersAdapter(List<String> answers, int type, ArrayList<String> selectedAnswers, ArrayList<Integer> selectedPositions) {
         this.answers = answers;
         this.type = type;
         this.selectedAnswers = selectedAnswers;
@@ -47,7 +48,7 @@ public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.ViewHold
                 break;
 
             case 3:
-               updateUI(holder.checkBox,holder.radioButton,holder.getAdapterPosition());
+                updateUI(holder.checkBox,holder.radioButton,holder.getAdapterPosition());
                 break;
         }
     }
@@ -82,10 +83,11 @@ public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.ViewHold
         });
     }
 
-    public List<String> getSelectedAnswers ()
+    public ArrayList<String> getSelectedAnswers ()
     {
         return selectedAnswers;
     }
+    public ArrayList<Integer> getSelectedPositions (){return selectedPositions;}
 
     @Override
     public int getItemCount() {
@@ -100,4 +102,6 @@ public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.ViewHold
             ButterKnife.bind(this,itemView);
         }
     }
+
+
 }

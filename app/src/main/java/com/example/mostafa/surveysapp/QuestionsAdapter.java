@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.example.mostafa.surveysapp.models.Question;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,6 +49,11 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
         return questions==null ? 0 : questions.size();
     }
 
+    public void remove(int position) {
+        questions.remove(position);
+        notifyDataSetChanged();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.question)TextView questionTextView;
         @BindView(R.id.options_list) RecyclerView optionsRecyclerView;
@@ -57,6 +63,12 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
         }
     }
 
+    public void addAll (List<Question> questions)
+    {
+        this.questions.clear();
+        this.questions.addAll(questions);
+        notifyDataSetChanged();
+    }
     public void add (Question question)
     {
         questions.add(question);

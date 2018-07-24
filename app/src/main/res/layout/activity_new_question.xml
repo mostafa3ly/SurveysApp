@@ -1,67 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="8dp"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:background="@android:color/white"
     tools:context=".NewQuestionActivity">
 
     <EditText
         android:id="@+id/question"
-        android:inputType="text"
-        android:padding="8dp"
-        android:hint="@string/question"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
+        android:layout_height="wrap_content"
+        android:hint="@string/question"
+        android:padding="16dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:inputType="text"
+        android:background="@android:color/transparent"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/options_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        tools:listitem="@layout/option_list_item"
+        android:layout_weight="1" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="horizontal"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_height="wrap_content">
+        android:padding="4dp"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/add_option"
-            android:text="@string/add_option"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:background="@drawable/button_background"/>
+            android:background="@drawable/button_background"
+            android:text="@string/add_option"
+            android:textColor="@android:color/white" />
+
         <View
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
         <Button
             android:id="@+id/remove_option"
-            android:text="@string/remove_option"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:background="@drawable/button_background"/>
+            android:background="@drawable/button_background"
+            android:text="@string/remove_option"
+            android:textColor="@android:color/white" />
+
         <View
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
         <Button
             android:id="@+id/submit"
-            android:text="@string/submit"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:background="@drawable/button_background"/>
-
-
+            android:background="@drawable/button_background"
+            android:text="@string/submit"
+            android:textColor="@android:color/white" />
     </LinearLayout>
-
-
-
 </LinearLayout>

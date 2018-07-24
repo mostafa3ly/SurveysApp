@@ -1,5 +1,6 @@
 package com.example.mostafa.surveysapp;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.mostafa.surveysapp.models.Survey;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -18,9 +20,15 @@ import butterknife.ButterKnife;
 public class MySurveysAdapter extends RecyclerView.Adapter<MySurveysAdapter.ViewHolder> {
 
     private List<Survey> mySurveys;
+    private OnClickListener onClickListener;
+    private OnPinPost onPinPost;
+    private Context context;
 
-    public MySurveysAdapter(List<Survey> mySurveys) {
+    public MySurveysAdapter(List<Survey> mySurveys, OnClickListener onClickListener, Context context,OnPinPost onPinPost) {
         this.mySurveys = mySurveys;
+        this.onClickListener = onClickListener;
+        this.context = context;
+        this.onPinPost = onPinPost;
     }
 
     @NonNull
@@ -33,9 +41,22 @@ public class MySurveysAdapter extends RecyclerView.Adapter<MySurveysAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull MySurveysAdapter.ViewHolder holder, int position) {
-        Survey survey = mySurveys.get(position);
+        final Survey survey = mySurveys.get(position);
         holder.titleTextView.setText(survey.getTitle());
-        holder.questionsCountTextView.setText(String.valueOf(survey.getQuestions().size()));
+        holder.questionsCountTextView.setText(String.valueOf(survey.getQuestions().size()) + " " + context.getString(R.string.questions));
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickListener.onClick(survey.getId());
+            }
+        });
+
+        holder.pinButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               onPinPost.onPinned(survey.getId(),survey.getTitle());
+            }
+        });
     }
 
     @Override
@@ -48,7 +69,6 @@ public class MySurveysAdapter extends RecyclerView.Adapter<MySurveysAdapter.View
         @BindView(R.id.survey_title)TextView titleTextView;
         @BindView(R.id.pin)ImageButton pinButton;
         @BindView(R.id.questions_count)TextView questionsCountTextView;
-        @BindView(R.id.results_count)TextView resultsCountTextView;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -57,14 +77,18 @@ public class MySurveysAdapter extends RecyclerView.Adapter<MySurveysAdapter.View
     }
 
 
-    public void clear ()
+    public void addAll(List<Survey> surveys)
     {
-        mySurveys.clear();
-        notifyDataSetChanged();
-    }
-    public void add(List<Survey> surveys)
-    {
+        mySurveys = new ArrayList<>();
         mySurveys.addAll(surveys);
         notifyDataSetChanged();
+    }
+
+    public interface OnClickListener{
+        void onClick(String id);
+    }
+
+    public interface OnPinPost {
+        void onPinned (String id, String title);
     }
 }

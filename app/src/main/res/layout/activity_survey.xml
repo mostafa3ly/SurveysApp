@@ -3,16 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="8dp"
     android:orientation="vertical"
+    android:background="@android:color/white"
     tools:context=".SurveyActivity">
 
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp"
+        android:padding="16dp"
+        android:textSize="20sp"
+        android:textColor="@android:color/black"
         android:id="@+id/question"
+        android:fontFamily="sans-serif"
         />
 
 
@@ -32,16 +35,19 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:gravity="top"
-                android:padding="4dp"
+                android:textSize="16sp"
+                android:padding="8dp"
+                android:layout_margin="1dp"
                 android:hint="@string/type_your_answer"
                 android:inputType="textMultiLine"
-                android:minLines="3" />
+                android:minLines="4" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/options_list"
+                tools:listitem="@layout/answer_list_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp" />
+                android:padding="16dp" />
 
         </LinearLayout>
 
@@ -50,7 +56,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/progress"
             android:layout_gravity="bottom|start"
-            android:layout_margin="8dp"/>
+            android:layout_margin="16dp"
+            android:fontFamily="serif"/>
         <Button
             android:id="@+id/submit"
             android:layout_width="wrap_content"
@@ -62,17 +69,17 @@
             android:textColor="@android:color/white"
             android:textStyle="bold"
             />
-    <Button
-        android:id="@+id/next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/button_background"
-        android:text="@string/next"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="8dp"
-        android:textColor="@android:color/white"
-        android:textStyle="bold"
-        />
+        <Button
+            android:id="@+id/next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_background"
+            android:text="@string/next"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="8dp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            />
 
     </FrameLayout>
 

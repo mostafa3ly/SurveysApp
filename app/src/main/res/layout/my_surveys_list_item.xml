@@ -3,11 +3,12 @@
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/white"
-    android:layout_margin="4dp"
-    android:padding="8dp">
+    android:layout_margin="2dp"
+    android:elevation="4dp"
+    android:background="@android:color/white">
 
     <LinearLayout
+        android:padding="4dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -16,6 +17,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif"
             android:layout_gravity="center"
             android:id="@+id/survey_title"/>
 
@@ -24,13 +29,17 @@
             android:id="@+id/pin"
             android:layout_gravity="center"
             android:src="@drawable/pin"
-            android:background="@android:color/transparent"
+            android:padding="4dp"
+            android:elevation="4dp"
+            android:translationZ="2dp"
+            android:background="@drawable/small_button_background"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
     </LinearLayout>
 
     <LinearLayout
+        android:padding="4dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -39,16 +48,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="start"
+            android:textSize="18sp"
             android:layout_gravity="center"
-            android:id="@+id/question_count"/>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="end"
-            android:layout_gravity="center"
-            android:id="@+id/results_count"/>
+            android:id="@+id/questions_count"/>
 
     </LinearLayout>
+    <View
+        android:background="@android:color/darker_gray"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
 
 </LinearLayout>

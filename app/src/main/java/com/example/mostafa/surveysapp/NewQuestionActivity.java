@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,6 +41,7 @@ public class NewQuestionActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_question);
         ButterKnife.bind(this);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mType = getIntent().getIntExtra(getString(R.string.type), 0);
         if (mType == 1) {
             addOptionsButton.setVisibility(View.GONE);
@@ -92,7 +94,16 @@ public class NewQuestionActivity extends AppCompatActivity implements View.OnCli
             removeOptionButton.setVisibility(View.VISIBLE);
         }
     }
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     private void addQuestion() {
         if (questionField.getText().toString().isEmpty() || mOptionsAdapter.getOptions().contains("")) {

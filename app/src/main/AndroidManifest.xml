@@ -8,8 +8,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:name=".SurveysApp"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity">
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/LoginTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,12 +22,39 @@
         <activity android:name=".SurveysListActivity" />
         <activity
             android:name=".NewSurveyActivity"
-            android:parentActivityName=".SurveysListActivity" />
+            android:label="@string/new_survey">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".SurveysListActivity" />
+        </activity>
         <activity
             android:name=".NewQuestionActivity"
-            android:parentActivityName=".NewSurveyActivity" />
-        <activity android:name=".MySurveysActivity" />
-        <activity android:name=".SurveyActivity"></activity>
+            android:label="@string/new_question">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".NewSurveyActivity" />
+        </activity>
+        <activity
+            android:name=".MySurveysActivity"
+            android:label="@string/my_surveys"
+            android:parentActivityName=".SurveysListActivity" />
+        <activity
+            android:name=".SurveyActivity"
+            android:parentActivityName=".SurveysListActivity" />
+        <activity android:name=".ResultsActivity" />
+        <activity android:name=".ResultActivity"/>
+
+        <receiver android:name=".widget.SurveyWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/survey_widget_info" />
+        </receiver>
+
+
     </application>
 
 </manifest>

@@ -1,6 +1,10 @@
 package com.example.mostafa.surveysapp;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -9,8 +13,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import com.example.mostafa.surveysapp.models.Survey;
+import com.example.mostafa.surveysapp.widget.SurveyWidgetProvider;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -31,27 +39,33 @@ public class SurveysListActivity extends AppCompatActivity implements SurveysAda
 
 
     @BindView(R.id.surveys_list)RecyclerView surveysRecyclerView;
-    private SurveysAdapter mSurveysAdapter;
+    @BindView(R.id.empty_surveys)LinearLayout emptyView;
+    @BindView(R.id.progress)ProgressBar progressBar;
+
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference mSurveysReference;
     private ValueEventListener mValueEventListener ;
     private List<Survey> mSurveys;
+    private SurveysAdapter mSurveysAdapter;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_surveys_list);
         ButterKnife.bind(this);
         mAuth = FirebaseAuth.getInstance();
         mSurveysReference = FirebaseDatabase.getInstance().getReference().child(getString(R.string.surveys));
+
+        mSurveys = new ArrayList<>();
+        mSurveysAdapter = new SurveysAdapter(new ArrayList<Survey>(), this, this);
         surveysRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mSurveysAdapter = new SurveysAdapter(new ArrayList<Survey>(),this);
         surveysRecyclerView.setAdapter(mSurveysAdapter);
+
         mValueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                mSurveys = new ArrayList<>();
                 List<Survey> surveys = new ArrayList<>();
+                mSurveys.clear();
                 for (DataSnapshot snapshot :dataSnapshot.getChildren()) {
                     String uId  = mAuth.getCurrentUser().getUid();
                     Survey survey = snapshot.getValue(Survey.class);
@@ -60,12 +74,14 @@ public class SurveysListActivity extends AppCompatActivity implements SurveysAda
                         surveys.add(survey);
                 }
                 mSurveysAdapter.addAll(surveys);
-
+                if (savedInstanceState!=null)surveysRecyclerView.getLayoutManager().onRestoreInstanceState(savedInstanceState.getParcelable(getString(R.string.position)));
+                progressBar.setVisibility(View.GONE);
+                if(surveys.isEmpty()) emptyView.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                progressBar.setVisibility(View.GONE);
             }
         };
     }
@@ -94,6 +110,17 @@ public class SurveysListActivity extends AppCompatActivity implements SurveysAda
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.sign_out:
+                SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.survey), Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.clear();
+                editor.commit();
+                editor.putBoolean(getString(R.string.pin),false);
+                editor.commit();
+                Intent widgetIntent = new Intent(this, SurveyWidgetProvider.class);
+                widgetIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+                int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), SurveyWidgetProvider.class));
+                widgetIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+                sendBroadcast(widgetIntent);
                 AuthUI.getInstance().signOut(this).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -106,13 +133,10 @@ public class SurveysListActivity extends AppCompatActivity implements SurveysAda
             case R.id.new_survey:
                 startActivity(new Intent(this,NewSurveyActivity.class));
                 return true;
-            case R.id.my_surveys: {
+            case R.id.my_surveys:
                 Intent intent = new Intent(this, MySurveysActivity.class);
-                ArrayList<Survey> mySurveys = getMySurveys();
-                intent.putParcelableArrayListExtra(getString(R.string.my_surveys),mySurveys);
+                intent.putParcelableArrayListExtra(getString(R.string.my_surveys),getMySurveys());
                 startActivity(intent);
-
-            }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -122,7 +146,7 @@ public class SurveysListActivity extends AppCompatActivity implements SurveysAda
     private ArrayList<Survey> getMySurveys ()
     {
         ArrayList<Survey> mySurveys = new ArrayList<>();
-        for (Survey survey :mySurveys) {
+        for (Survey survey :mSurveys) {
             if (survey.getOwnerId().equals(mAuth.getCurrentUser().getUid()))
             {
                 mySurveys.add(survey);
@@ -136,5 +160,11 @@ public class SurveysListActivity extends AppCompatActivity implements SurveysAda
         Intent intent = new Intent(this,SurveyActivity.class);
         intent.putExtra(getString(R.string.survey),survey);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(getString(R.string.position),surveysRecyclerView.getLayoutManager().onSaveInstanceState());
     }
 }

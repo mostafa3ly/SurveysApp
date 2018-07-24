@@ -1,12 +1,18 @@
 package com.example.mostafa.surveysapp;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -55,32 +61,92 @@ public class NewSurveyActivity extends AppCompatActivity implements View.OnClick
                 publishSurvey();
             }
         });
+        newQuestionMenu.setClosedOnTouchOutside(true);
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
+                if(direction==ItemTouchHelper.RIGHT || direction == ItemTouchHelper.LEFT) {
+                    final AlertDialog alertDialog = new AlertDialog.Builder(NewSurveyActivity.this).create();
+                    alertDialog.setTitle(getString(R.string.warning));
+                    alertDialog.setMessage(getString(R.string.deleting_question_message));
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.yes),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    mQuestionsAdapter.remove(viewHolder.getAdapterPosition());
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            mQuestionsAdapter.notifyDataSetChanged();
+                            dialog.dismiss();
+                        }
+                    });
+                    alertDialog.show();
+                }
+            }
+        };
+        new ItemTouchHelper(simpleCallback).attachToRecyclerView(questionsRecyclerView);
+    }
+
+
+    private void closeKeyboard()
+    {
+        InputMethodManager inputManager =
+                (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.hideSoftInputFromWindow(
+                this.getCurrentFocus().getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+    private void openKeyboard(){
+        titleField.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(titleField, InputMethodManager.SHOW_IMPLICIT);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 
     private void publishSurvey()
     {
         if (titleField.getText().toString().isEmpty()) {
             Toast.makeText(this, getString(R.string.add_survey_title), Toast.LENGTH_SHORT).show();
+            openKeyboard();
             return;
         }
         else if (mQuestionsAdapter.getQuestions().size()==0)
         {
             Toast.makeText(this, getString(R.string.no_questions_added), Toast.LENGTH_SHORT).show();
+            titleField.clearFocus();
+            closeKeyboard();
             return;
         }
+
+        titleField.clearFocus();
+        closeKeyboard();
+
         Survey survey = new Survey();
-        //survey.setOwnerPic(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString());
+        survey.setOwnerPic(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString());
         survey.setQuestions(mQuestionsAdapter.getQuestions());
         survey.setOwnerId(FirebaseAuth.getInstance().getCurrentUser().getUid());
         survey.setTitle(titleField.getText().toString());
         DatabaseReference surveysReference = FirebaseDatabase.getInstance().getReference().child(getString(R.string.surveys));
         String id  = surveysReference.push().getKey();
         survey.setId(id);
+        publishButton.setEnabled(false);
         surveysReference.child(id).setValue(survey);
-        Toast.makeText(this, getString(R.string.survey_published_successfully), Toast.LENGTH_SHORT).show();
+        Toast.makeText(NewSurveyActivity.this, getString(R.string.survey_published_successfully), Toast.LENGTH_SHORT).show();
         finish();
-    }
 
+    }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -105,7 +171,10 @@ public class NewSurveyActivity extends AppCompatActivity implements View.OnClick
         else if (v.getId()==R.id.single_choice) type = 2;
         else type = 3;
         newQuestionMenu.close(true);
+        titleField.clearFocus();
+        closeKeyboard();
         addNewQuestion(type);
+
     }
 
     private void addNewQuestion(int type) {
