@@ -5,7 +5,7 @@ android {
         config {
             keyAlias 'Mostafa'
             keyPassword 'password'
-            storeFile file('E:/AndroidStudioProjects/SurveysApp/keystore.jks')
+            storeFile file('../keystore.jks')
             storePassword 'password'
         }
     }

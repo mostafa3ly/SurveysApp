@@ -1,6 +1,5 @@
 package com.example.mostafa.surveysapp;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -40,8 +39,6 @@ public class ResultsActivity extends AppCompatActivity implements ResultsAdapter
         setContentView(R.layout.activity_results);
         ButterKnife.bind(this);
         String id = getIntent().getStringExtra(getString(R.string.id));
-        if(id==null)
-            id  = getSharedPreferences(getString(R.string.survey), Context.MODE_PRIVATE).getString(getString(R.string.id),"");
         mResultsAdapter = new ResultsAdapter(new ArrayList<Result>(),this);
         resultsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         resultsRecyclerView.setAdapter(mResultsAdapter);

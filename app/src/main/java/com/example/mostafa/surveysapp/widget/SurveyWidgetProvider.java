@@ -1,41 +1,55 @@
 package com.example.mostafa.surveysapp.widget;
 
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.widget.RemoteViews;
 
 import com.example.mostafa.surveysapp.R;
-import com.example.mostafa.surveysapp.ResultsActivity;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class SurveyWidgetProvider extends AppWidgetProvider {
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
+    static void updateAppWidget(final Context context, final AppWidgetManager appWidgetManager,
+                                final int appWidgetId) {
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(context.getString(R.string.survey), Context.MODE_PRIVATE);
 
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.survey_widget);
-        String count = sharedPreferences.getString(context.getString(R.string.results), "");
-        String title = sharedPreferences.getString(context.getString(R.string.title), "");
-        String id = sharedPreferences.getString(context.getString(R.string.id), "");
-        boolean pin = sharedPreferences.getBoolean(context.getString(R.string.pin), false);
-        Intent intent = new Intent(context, ResultsActivity.class);
-        intent.putExtra(context.getString(R.string.id), id);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-        if (pin) {
-            views.setOnClickPendingIntent(R.id.results_count, pendingIntent);
-            views.setTextViewText(R.id.title, title);
-            views.setTextViewText(R.id.results_count, count + " " + context.getString(R.string.results));
-        } else {
+        final String title = sharedPreferences.getString(context.getString(R.string.title), "");
+        final String id = sharedPreferences.getString(context.getString(R.string.id), null);
+        final RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.survey_widget);
+        if(id!=null) {
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child(context.getString(R.string.surveys))
+                    .child(id).child(context.getString(R.string.results));
+            ValueEventListener valueEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    views.setTextViewText(R.id.results_count,dataSnapshot.getChildrenCount()+" " + context.getString(R.string.results));
+                    views.setTextViewText(R.id.title, title);
+                    appWidgetManager.updateAppWidget(appWidgetId, views);
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            };
+            reference.addValueEventListener(valueEventListener);
+        }
+        else {
             views.setTextViewText(R.id.results_count, context.getString(R.string.no_pinned_survey));
             views.setTextViewText(R.id.title, "");
-            views.setOnClickPendingIntent(R.id.results_count,null);
+            views.setOnClickPendingIntent(R.id.results_count, null);
+            appWidgetManager.updateAppWidget(appWidgetId, views);
         }
-        appWidgetManager.updateAppWidget(appWidgetId, views);
+
     }
 
     @Override

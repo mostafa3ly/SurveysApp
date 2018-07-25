@@ -120,6 +120,8 @@ public class SurveyActivity extends AppCompatActivity implements View.OnClickLis
         progress.setText(getString(R.string.progress, mCurrentPosition + 1, mQuestionCount));
         if (question.getType() != 1)
             answerField.setVisibility(View.GONE);
+        else
+            answerField.setVisibility(View.VISIBLE);
         switch (question.getType()) {
             case 1:
                 mAnswersAdapter = new AnswersAdapter(new ArrayList<String>(),question.getType(),mSelectedAnswers,mSelectedPositions);

@@ -114,8 +114,6 @@ public class SurveysListActivity extends AppCompatActivity implements SurveysAda
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.clear();
                 editor.commit();
-                editor.putBoolean(getString(R.string.pin),false);
-                editor.commit();
                 Intent widgetIntent = new Intent(this, SurveyWidgetProvider.class);
                 widgetIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
                 int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), SurveyWidgetProvider.class));
