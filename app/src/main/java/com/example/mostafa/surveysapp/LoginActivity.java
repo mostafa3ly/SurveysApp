@@ -73,7 +73,6 @@ public class LoginActivity extends AppCompatActivity {
                     AuthUI.getInstance()
                             .createSignInIntentBuilder()
                             .setLogo(R.drawable.logo)
-                            .setIsSmartLockEnabled(false)
                             .setAvailableProviders(
                                     providers)
                             .build(),
