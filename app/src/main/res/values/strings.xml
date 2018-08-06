@@ -60,4 +60,5 @@
     <string name="no_pinned_survey">No pinned survey</string>
     <string name="survey_pinned">Survey pinned</string>
     <string name="title">title</string>
+    <string name="loading">Loading</string>
 </resources>

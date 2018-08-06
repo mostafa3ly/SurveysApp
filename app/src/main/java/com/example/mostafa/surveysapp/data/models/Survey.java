@@ -1,4 +1,4 @@
-package com.example.mostafa.surveysapp.models;
+package com.example.mostafa.surveysapp.data.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -6,11 +6,22 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Result implements Parcelable {
+public class Survey implements Parcelable {
+
+    private String title;
     private String ownerId;
     private String ownerPic;
-    private String ownerName;
     private List<Question> questions;
+    private String id;
+
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public String getOwnerId() {
         return ownerId;
@@ -18,14 +29,6 @@ public class Result implements Parcelable {
 
     public void setOwnerId(String ownerId) {
         this.ownerId = ownerId;
-    }
-
-    public List<Question> getQuestions() {
-        return questions;
-    }
-
-    public void setQuestions(List<Question> questions) {
-        this.questions = questions;
     }
 
     public String getOwnerPic() {
@@ -36,35 +39,45 @@ public class Result implements Parcelable {
         this.ownerPic = ownerPic;
     }
 
-    public String getOwnerName() {
-        return ownerName;
+    public List<Question> getQuestions() {
+        return questions;
     }
 
-    public void setOwnerName(String ownerName) {
-        this.ownerName = ownerName;
-    }
-
-    public Result() {
-
-    }
-
-    public Result(String ownerId, String ownerPic, String ownerName, List<Question> questions) {
-        this.ownerId = ownerId;
-        this.ownerPic = ownerPic;
-        this.ownerName = ownerName;
+    public void setQuestions(List<Question> questions) {
         this.questions = questions;
     }
 
-    protected Result(Parcel in) {
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Survey() {
+
+    }
+
+    public Survey(String title, String ownerId, String ownerPic, List<Question> questions, String id) {
+        this.title = title;
+        this.ownerId = ownerId;
+        this.ownerPic = ownerPic;
+        this.questions = questions;
+        this.id = id;
+    }
+
+    protected Survey(Parcel in) {
+        title = in.readString();
         ownerId = in.readString();
         ownerPic = in.readString();
-        ownerName = in.readString();
         if (in.readByte() == 0x01) {
             questions = new ArrayList<Question>();
             in.readList(questions, Question.class.getClassLoader());
         } else {
             questions = null;
         }
+        id = in.readString();
     }
 
     @Override
@@ -74,27 +87,28 @@ public class Result implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(title);
         dest.writeString(ownerId);
         dest.writeString(ownerPic);
-        dest.writeString(ownerName);
         if (questions == null) {
             dest.writeByte((byte) (0x00));
         } else {
             dest.writeByte((byte) (0x01));
             dest.writeList(questions);
         }
+        dest.writeString(id);
     }
 
     @SuppressWarnings("unused")
-    public static final Parcelable.Creator<Result> CREATOR = new Parcelable.Creator<Result>() {
+    public static final Parcelable.Creator<Survey> CREATOR = new Parcelable.Creator<Survey>() {
         @Override
-        public Result createFromParcel(Parcel in) {
-            return new Result(in);
+        public Survey createFromParcel(Parcel in) {
+            return new Survey(in);
         }
 
         @Override
-        public Result[] newArray(int size) {
-            return new Result[size];
+        public Survey[] newArray(int size) {
+            return new Survey[size];
         }
     };
 }

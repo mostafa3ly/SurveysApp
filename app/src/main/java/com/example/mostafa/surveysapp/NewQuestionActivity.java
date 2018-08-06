@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.mostafa.surveysapp.models.Question;
+import com.example.mostafa.surveysapp.data.models.Question;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@android:color/white"
-    tools:context=".LoginActivity">
+    tools:context=".login.LoginActivity">
 
 
     <android.support.v7.widget.Toolbar
@@ -24,16 +24,18 @@
             android:textSize="30sp"
             android:textStyle="bold" />
     </android.support.v7.widget.Toolbar>
-    <ImageView
-        android:layout_width="150dp"
-        android:layout_height="0dp"
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:contentDescription="@string/app_name"
-        android:scaleType="fitCenter"
-        android:layout_weight="1"
-        android:src="@drawable/logo" />
+        android:gravity="center"
+        android:textSize="100sp"
+        android:layout_marginTop="100dp"
+        android:fontFamily="cursive"
+        android:text="@string/surveys" />
 
     <ProgressBar
+        android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -42,6 +44,12 @@
         style="?android:attr/progressBarStyleHorizontal"
         />
 
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/message"/>
 
     <ImageButton
         android:id="@+id/refresh"

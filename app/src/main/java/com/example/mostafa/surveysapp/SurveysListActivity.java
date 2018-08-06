@@ -17,7 +17,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
-import com.example.mostafa.surveysapp.models.Survey;
+import com.example.mostafa.surveysapp.login.LoginActivity;
+import com.example.mostafa.surveysapp.data.models.Survey;
 import com.example.mostafa.surveysapp.widget.SurveyWidgetProvider;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;

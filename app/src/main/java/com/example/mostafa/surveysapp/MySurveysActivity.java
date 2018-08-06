@@ -16,7 +16,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.mostafa.surveysapp.models.Survey;
+import com.example.mostafa.surveysapp.data.models.Survey;
 import com.example.mostafa.surveysapp.widget.SurveyWidgetProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

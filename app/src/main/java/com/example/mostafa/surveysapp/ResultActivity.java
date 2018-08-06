@@ -6,8 +6,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
-import com.example.mostafa.surveysapp.models.Question;
-import com.example.mostafa.surveysapp.models.Result;
+import com.example.mostafa.surveysapp.data.models.Question;
+import com.example.mostafa.surveysapp.data.models.Result;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

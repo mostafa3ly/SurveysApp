@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.mostafa.surveysapp.models.Question;
+import com.example.mostafa.surveysapp.data.models.Question;
 
 import java.util.ArrayList;
 import java.util.List;

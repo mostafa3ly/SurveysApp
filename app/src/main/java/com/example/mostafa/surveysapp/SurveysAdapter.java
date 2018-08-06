@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.mostafa.surveysapp.models.Survey;
+import com.example.mostafa.surveysapp.data.models.Survey;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

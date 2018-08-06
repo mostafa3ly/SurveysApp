@@ -1,4 +1,4 @@
-package com.example.mostafa.surveysapp.models;
+package com.example.mostafa.surveysapp.data.models;
 
 public class User {
     private String uid;

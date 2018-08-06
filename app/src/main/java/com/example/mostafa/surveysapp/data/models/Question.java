@@ -1,4 +1,4 @@
-package com.example.mostafa.surveysapp.models;
+package com.example.mostafa.surveysapp.data.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
