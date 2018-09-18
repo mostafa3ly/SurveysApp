@@ -1,4 +1,4 @@
-package com.example.mostafa.surveysapp;
+package com.example.mostafa.surveysapp.ui.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.mostafa.surveysapp.R;
 import com.example.mostafa.surveysapp.data.models.Question;
 
 import java.util.ArrayList;

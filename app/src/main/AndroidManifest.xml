@@ -11,7 +11,7 @@
         android:name=".SurveysApp"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".login.LoginActivity"
+            android:name=".ui.login.LoginActivity"
             android:theme="@style/LoginTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,13 +19,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SurveysListActivity" />
+        <activity android:name=".ui.home.HomeActivity" />
         <activity
             android:name=".NewSurveyActivity"
             android:label="@string/new_survey">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".SurveysListActivity" />
+                android:value=".ui.home.HomeActivity" />
         </activity>
         <activity
             android:name=".NewQuestionActivity"
@@ -35,12 +35,13 @@
                 android:value=".NewSurveyActivity" />
         </activity>
         <activity
-            android:name=".MySurveysActivity"
+            android:name=".ui.mySurveys.MySurveysActivity"
+            android:screenOrientation="portrait"
             android:label="@string/my_surveys"
-            android:parentActivityName=".SurveysListActivity" />
+            android:parentActivityName=".ui.home.HomeActivity" />
         <activity
             android:name=".SurveyActivity"
-            android:parentActivityName=".SurveysListActivity" />
+            android:parentActivityName=".ui.home.HomeActivity" />
         <activity android:name=".ResultsActivity" />
         <activity android:name=".ResultActivity"/>
 

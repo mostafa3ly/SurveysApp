@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.mostafa.surveysapp.data.models.Question;
 import com.example.mostafa.surveysapp.data.models.Result;
 import com.example.mostafa.surveysapp.data.models.Survey;
+import com.example.mostafa.surveysapp.ui.adapters.AnswersAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;

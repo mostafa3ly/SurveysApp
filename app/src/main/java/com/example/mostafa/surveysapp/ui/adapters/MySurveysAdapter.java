@@ -1,4 +1,4 @@
-package com.example.mostafa.surveysapp;
+package com.example.mostafa.surveysapp.ui.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -6,9 +6,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.mostafa.surveysapp.R;
 import com.example.mostafa.surveysapp.data.models.Survey;
 
 import java.util.ArrayList;
@@ -21,14 +21,12 @@ public class MySurveysAdapter extends RecyclerView.Adapter<MySurveysAdapter.View
 
     private List<Survey> mySurveys;
     private OnClickListener onClickListener;
-    private OnPinPost onPinPost;
     private Context context;
 
-    public MySurveysAdapter(List<Survey> mySurveys, OnClickListener onClickListener, Context context,OnPinPost onPinPost) {
+    public MySurveysAdapter(List<Survey> mySurveys, OnClickListener onClickListener, Context context) {
         this.mySurveys = mySurveys;
         this.onClickListener = onClickListener;
         this.context = context;
-        this.onPinPost = onPinPost;
     }
 
     @NonNull
@@ -43,7 +41,8 @@ public class MySurveysAdapter extends RecyclerView.Adapter<MySurveysAdapter.View
     public void onBindViewHolder(@NonNull MySurveysAdapter.ViewHolder holder, int position) {
         final Survey survey = mySurveys.get(position);
         holder.titleTextView.setText(survey.getTitle());
-        holder.questionsCountTextView.setText(String.valueOf(survey.getQuestions().size()) + " " + context.getString(R.string.questions));
+        String str = String.valueOf(survey.getQuestions().size()) + " " + context.getString(R.string.questions);
+        holder.questionsCountTextView.setText(str);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,12 +50,6 @@ public class MySurveysAdapter extends RecyclerView.Adapter<MySurveysAdapter.View
             }
         });
 
-        holder.pinButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               onPinPost.onPinned(survey.getId(),survey.getTitle());
-            }
-        });
     }
 
     @Override
@@ -67,7 +60,6 @@ public class MySurveysAdapter extends RecyclerView.Adapter<MySurveysAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.survey_title)TextView titleTextView;
-        @BindView(R.id.pin)ImageButton pinButton;
         @BindView(R.id.questions_count)TextView questionsCountTextView;
 
         public ViewHolder(View itemView) {
@@ -84,11 +76,9 @@ public class MySurveysAdapter extends RecyclerView.Adapter<MySurveysAdapter.View
         notifyDataSetChanged();
     }
 
+
     public interface OnClickListener{
         void onClick(String id);
     }
 
-    public interface OnPinPost {
-        void onPinned (String id, String title);
-    }
 }

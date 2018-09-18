@@ -1,4 +1,4 @@
-package com.example.mostafa.surveysapp;
+package com.example.mostafa.surveysapp.ui.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.mostafa.surveysapp.R;
 import com.example.mostafa.surveysapp.data.models.Result;
 import com.squareup.picasso.Picasso;
 

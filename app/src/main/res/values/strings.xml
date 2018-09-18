@@ -37,7 +37,7 @@
     <string name="pic_url">https://i.stack.imgur.com/dr5qp.jpg</string>
     <string name="question_count">%d Questions</string>
     <string name="cancel">Cancel</string>
-    <string name="no_search_results">No search results</string>
+    <string name="no_search_results">No surveys</string>
     <string name="is_searching">Is searching</string>
     <string name="search_word">Search word</string>
     <string name="input_text">Input field</string>

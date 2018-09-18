@@ -1,11 +1,7 @@
-package com.example.mostafa.surveysapp.login;
+package com.example.mostafa.surveysapp.ui.login;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageButton;
@@ -13,7 +9,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.mostafa.surveysapp.R;
-import com.example.mostafa.surveysapp.SurveysListActivity;
+import com.example.mostafa.surveysapp.base.BaseActivity;
+import com.example.mostafa.surveysapp.ui.home.HomeActivity;
 import com.firebase.ui.auth.AuthUI;
 
 import java.util.Arrays;
@@ -22,7 +19,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class LoginActivity extends AppCompatActivity implements LoginView {
+public class LoginActivity extends BaseActivity implements LoginView {
 
 
     @BindView(R.id.toolbar)
@@ -34,7 +31,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     @BindView(R.id.message)
     TextView message;
 
-    private LoginPresenter loginPresenter;
+    private LoginPresenter presenter;
 
     private static final int RC_SIGN_IN = 123;
 
@@ -42,36 +39,31 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        ButterKnife.bind(this);
+        setUnBinder(ButterKnife.bind(this));
+        presenter = new LoginPresenterImpl(this);
+        initViews();
+
+    }
+
+    @Override
+    public void initViews() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
-        loginPresenter = new LoginPresenterImpl(this);
-        loginPresenter.checkIfLoggedIn();
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginPresenter.checkIfLoggedIn();
+                presenter.checkIfLoggedIn();
             }
         });
+        presenter.checkIfLoggedIn();
     }
-
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
-            loginPresenter.onLoginUIResult(resultCode, isNetworkAvailable());
+            presenter.onLoginUIResult(resultCode, isNetworkAvailable());
         }
-    }
-
-
-    private boolean isNetworkAvailable() {
-        ConnectivityManager cm =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        return activeNetwork != null &&
-                activeNetwork.isConnectedOrConnecting();
     }
 
 
@@ -90,7 +82,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
     @Override
     public void openMainActivity() {
-        startActivity(new Intent(LoginActivity.this, SurveysListActivity.class));
+        startActivity(new Intent(LoginActivity.this, HomeActivity.class));
         finish();
     }
 
@@ -112,5 +104,11 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
                     RC_SIGN_IN);
         }
         else finish();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        presenter.deAttachListener();
     }
 }

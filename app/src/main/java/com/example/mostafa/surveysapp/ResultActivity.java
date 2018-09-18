@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.example.mostafa.surveysapp.data.models.Question;
 import com.example.mostafa.surveysapp.data.models.Result;
+import com.example.mostafa.surveysapp.ui.adapters.QuestionsAdapter;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
